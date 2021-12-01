@@ -26,6 +26,25 @@ const AlarmPage = ({ navigation }) => {
     // console.log(newAlarms.rows._array);
   };
 
+  const deleteAlarm = (id) => {
+    const newAlarms = alarms.filter((item) => item.id !== id);
+    Database.delete(db, id);
+    setAlarms(newAlarms);
+  };
+
+  const toggleDay = (id, day) => {
+    const newAlarms = [...alarms];
+    // const alarm = newAlarms.find((item) => item.id == id);
+    const index = newAlarms.findIndex((item) => item.id == id);
+    newAlarms[index][day] = newAlarms[index][day] == 'false' ? 'true' : 'false';
+    console.log(newAlarms[index][day]);
+    Database.update(db, id, {
+      column: day,
+      value: newAlarms[index][day] == 'true',
+    });
+    setAlarms(newAlarms);
+  };
+
   useEffect(() => {
     Database.createTable(db);
     getAlarms();
@@ -43,7 +62,11 @@ const AlarmPage = ({ navigation }) => {
         </View>
       </TouchableNativeFeedback>
       <ScrollView style={styles.scroll}>
-        <AlarmList getAlarms={getAlarms} alarms={alarms} />
+        <AlarmList
+          deleteAlarm={deleteAlarm}
+          alarms={alarms}
+          toggleDay={toggleDay}
+        />
       </ScrollView>
     </View>
   );

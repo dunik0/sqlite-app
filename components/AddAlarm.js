@@ -15,7 +15,7 @@ const AddAlarm = ({ navigation, route }) => {
   const addAlarm = () => {
     const newAlarm = {
       time: '00:00',
-      isOn: true,
+      isOn: false,
       monday: false,
       tuesday: false,
       wednesday: false,

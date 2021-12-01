@@ -12,8 +12,9 @@ import {
 import Database from './Database';
 import deleteIcon from '../assets/delete-icon.png';
 import expandIcon from '../assets/expand-icon.png';
+import DayList from './DayList';
 
-const AlarmItem = ({ data, refreshAlarms }) => {
+const AlarmItem = ({ data, removeAlarm, toggleDay }) => {
   const [height, setHeight] = useState(new Animated.Value(200));
   const [isExpanded, setIsExpanded] = useState(false);
   const [isOn, setIsOn] = useState(data.isOn === 'true');
@@ -31,8 +32,7 @@ const AlarmItem = ({ data, refreshAlarms }) => {
   };
 
   const deleteAlarm = () => {
-    Database.delete(db, data.id);
-    refreshAlarms();
+    removeAlarm(data.id);
   };
 
   const turnOnOrOff = () => {
@@ -77,7 +77,7 @@ const AlarmItem = ({ data, refreshAlarms }) => {
             </View>
           </TouchableNativeFeedback>
         </View>
-        <View></View>
+        {isExpanded ? <DayList data={data} toggleDay={toggleDay} /> : null}
       </Animated.View>
     </View>
   );
